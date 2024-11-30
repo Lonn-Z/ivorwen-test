@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your assignments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #list {
+            margin: 10px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        #list li {
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #000000;
+            border: 1px solid #c71111;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assignments:</h1>
+    <ul id="hw-list"></ul>
+    
+    <script>
+
+        // CHANGES
+        function runPythonScript(scriptPath, args, callback) {
+            const pythonProcess = spawn('python', [scriptPath].concat(args));
+        
+            let data = '';
+            pythonProcess.stdout.on('data', (chunk) => {
+                data += chunk.toString(); // Collect data from Python script
+            });
+        
+            pythonProcess.stderr.on('data', (error) => {
+                console.error(`stderr: ${error}`);
+            });
+        
+            pythonProcess.on('close', (code) => {
+                if (code !== 0) {
+                    console.log(`Python script exited with code ${code}`);
+                    callback(`Error: Script exited with code ${code}`, null);
+                } else {
+                    console.log('Python script executed successfully');
+                    callback(null, data);
+                }
+            });
+        }
+
+        //Displays the list of hw items (should be called after fetching the list of hw items)
+        //list: A reference to the id of the html list (pass in document.getElementById("hw-list"))
+        //hwitems: A list of strings where each string is the name of the hw item
+        function displayList(list, hwitems) {
+            //Clear list before re-adding everything
+            list.innerHTML = "";
+
+            hwitems.forEach((text, index) => {
+                //Create item
+                const listItem = document.createElement("li");
+                
+                //Add text to item
+                const itemText = document.createElement("span");
+                itemText.textContent = text;
+                listItem.appendChild(itemText);
+
+                //Mark complete button
+                const completebutton = document.createElement("button");
+                completebutton.textContent = "Mark complete"; //should be changeable
+                completebutton.addEventListener("click", () => mark_complete(index)); //needs to map to different function
+
+                //Pin assignment button
+                const pinbutton = document.createElement("button");
+                pinbutton.textContent = "Pin assignment"; //should be changeable
+                pinbutton.addEventListener("click", () => mark_pin(index)); //needs to map to different function
+
+                // Append buttons to the list item
+                listItem.appendChild(completebutton);
+                listItem.appendChild(pinbutton);
+
+                // Append the list item to the list
+                list.appendChild(listItem);
+            });
+        }
+
+        function mark_complete(id) {
+            
+        }
+
+        function mark_pin(id) {
+            
+        }
+
+    </script>
+</body>
+</html>
