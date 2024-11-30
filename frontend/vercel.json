@@ -1,15 +1,17 @@
 {
     "version": 2,
+    "public": true,
     "builds": [
-        {
-            "src": "index.js",
-            "use": "@vercel/node"
-        }
+      { "src": "index.html", "use": "@vercel/static" },
+      { "src": "hwlist.html", "use": "@vercel/static" },
+      { "src": "script.js", "use": "@vercel/static" },
+      { "src": "styles.css", "use": "@vercel/static" },
+      { "src": "../backend/index.js", "use": "@vercel/node" }
     ],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/index.js"
-        }
+      { "src": "/api/(.*)", "dest": "/../backend/index.js" },
+      { "src": "/", "dest": "/index.html" },
+      { "src": "/hwlist", "dest": "/hwlist.html" }
     ]
-}
+  }
+  
